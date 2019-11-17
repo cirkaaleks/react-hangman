@@ -5,7 +5,7 @@ function App() {
   //dodajemo komponentu Hangman u nasu aplikaciju
   return (
     <div>
-      <Hangman/>
+      {/*dodaj hangman komponentu ispod*/}
 
     </div>
   );

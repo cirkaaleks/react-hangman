@@ -14,13 +14,12 @@ import greska6 from './images/6.jpg';
 
 class Hangman extends Component {
 
-    //ako komponenta(Hangman u ovom slucaju) ne dobija props ovo ce biti njegov default props
+    // default props ako hangman ne dobije props ovi su mu po default
     static defaultProps = {
         maxNetacnih: 6,
         slike:[greska0,greska1,greska2,greska3,greska4,greska5,greska6]
     }
-    //konstruktor klase ovde je ceo state(stanje) nase aplikacije pratimo broj gresaka, karaktere koje
-    //je probao da pogodi kao ii odgovor
+    //konstruktor
     constructor(props){
         super(props);
 
@@ -31,80 +30,34 @@ class Hangman extends Component {
         }
     }
 
-    //vraca trenutno stanje reci kao niz npr [j,a,_,a]  za "java" ako smo do tad pogodili 'j' i 'a'
-    pogodjenaRec(){
-        //split('') deli string sa odgovorom na niz karaktera posele pomocu map iteriramo kroz taj niz
-        //pogodak znaci predstavlja karakter(slovo) u za svaku iteraciju
-        return this.state.odgovor.split('').map(pogodak => {
-            //ako se pogodak nazali u nizu karaktera koje smo pogadjali onda vraca to slovo
-            if(this.state.pogadjao.includes(pogodak)){
-                return pogodak;
-            }
-            //ako ne vraca '_'
-            else return '_';
-        });
-    }
-        //kada kliknemo na dugme izvrsava se ova funkcija 'e' je event object
-    handleClickNaDugme(e){
-        //e.target.value je slovo dugmeta na koje smo kliknuli
-        const slovo = e.target.value;
-        //ovde menjamo state aplikacije kada se menja state mora da se radi pomocu setState metode
-        //unutar setState prosledjujemo anonimnu funkciju koja kao argument prima stari state i vraca
-        //novi objekat koji treba da se merguje sa starim state
-        this.setState(state => ({
-            // ove tri tacke su spread operator samo pravim niz koji ima sve iz state.pogadao i novo slovo
-            pogadjao: [...state.pogadjao,slovo],
-            greske: state.greske + (state.odgovor.includes(slovo) ? 0:1)
-        }));
-    }
-    generisiDugmice(){
-        const abeceda = 'abcdefghijklmnopqrstuvwxyz';
-        //sa split delim string na niz karaktera i sa map iteriramo kroz njega isto gao gore za pogodjenaRec()
-        const dugmici = abeceda.split('').map(slovo => {
+    //1.pogodjenaRec() vraca trenutno stanje reci kao niz npr [j,a,_,a]  za "java" ako smo do tad pogodili 'j' i 'a'
 
-        //dugmetu dajem klasu btn koju sam stilizovao u index.css
-        //za handleClickNaDugme morate da bind-ujete 'this' ili kao ja ovde ili u konstruktoru
-        //zato sto je to handleClickNaDugme metoda i prosledjuje se kao callback eventlistneru
-        //i on kada pozove callback 'this' se vise nece odnositi na objekat Hangman vec na globalni Window object
-        //includes proverava da li je slovo sadrzano u nizu pogadjao i vraca boolean
-            return (
-                <button className="btn" key={slovo} value={slovo} 
-                onClick={this.handleClickNaDugme.bind(this)}
-                disabled={this.state.pogadjao.includes(slovo)}>
-                    {slovo}
-                </button>
-            )
-        });
-        //ovde vracamo sve dugmice
-        return dugmici;
-    }
+
+    //2.handleClickNaDugme kada se klikne na dugme menjamo state dodajemo tu vrednost
+    
+
+    //3.generisiDugmice() vratiti niz jsx dugmica svaki je jedno slovo abecede
+
+    
     
     render(){
-        //sa join spajamo niz koji pogodjenaRec() vraca i ako je jednako odgovoru onda je korisnik pobedio
-        const pobedio = this.pogodjenaRec().join('') === this.state.odgovor;
-        //ako je broj gresaka veci ili jednak maksimalnom broju korisnik je izgubio
-        const izgubio = this.state.greske >= this.props.maxNetacnih;
-        //u dugmice smestamo sve dugmice
-        let dugmici = this.generisiDugmice();
+        //1.provervamo da li je pobedio i smestamo kao boolean
 
-        //ako je korisnik pobedio umesto u dugmici umesto dugmica smestamo h2 sa porukom Pobedio si
-        if(pobedio){
-            dugmici = <h2>Pobedio si!!!</h2>
-        }
-        //isto kao za pobedio
-        if(izgubio){
-            dugmici = <h2>Izgubilo si!!!</h2>
-        }
-        //u komponentu Vesala prosledjujem kao prop sliku koja odgovara trenutnom broju gresaka
+
+        //2.proveravamo da li je izgubio i smestamo kao boolean
+
+
+        //3.u promenjivu smestamo sve jsx dugmice iz funkcije generisiDugmice()
+
+
+        //4.ako je korisnik pobedio umesto dugmica poruka pobedio
+        
+
+        //5.ako je korisnik izgubio umesto dugmica poruka izgubio
+        
+        //6.vracamo jsx
         return (
-            <div className="hangman-container">
-                <h1>Pogodite programski jezik spasite demonstratora!</h1>
-                <Vesala img={this.props.slike[this.state.greske]}/>
-                <p>{this.pogodjenaRec()}</p>
-                <div className="dugme-container">
-                    {dugmici}
-                </div>
-            </div>
+            
         );
     }
 }
